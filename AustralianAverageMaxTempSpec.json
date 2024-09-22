@@ -1,0 +1,65 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "description": "Map visualisation of Australian average maximum temperatures with state outlines and finer graticules.",
+    "width": 800,
+    "height": 600,
+    "layer": [
+      {
+        "data": {
+          "graticule": { "step": [5, 5] }
+        },
+        "mark": {
+          "type": "geoshape",
+          "stroke": "lightgray",
+          "strokeWidth": 0.5
+        },
+        "projection": {
+          "type": "mercator",
+          "center": [135, -25],
+          "scale": 1000
+        }
+      },
+      {
+        "data": {
+          "url": "./australian-states.json",
+          "format": { "type": "json" }
+        },
+        "mark": {
+          "type": "geoshape",
+          "fill": "none",
+          "stroke": "black"
+        },
+        "projection": {
+          "type": "mercator",
+          "center": [135, -25],
+          "scale": 1000
+        }
+      },
+      {
+        "data": {
+          "url": "./AustralianAverageMaxTemp.json",
+          "format": { "type": "json" }
+        },
+        "mark": "circle",
+        "projection": {
+          "type": "mercator",
+          "center": [135, -25],
+          "scale": 1000
+        },
+        "encoding": {
+          "longitude": { "field": "long", "type": "quantitative" },
+          "latitude": { "field": "lat", "type": "quantitative" },
+          "size": { "field": "Temp", "type": "quantitative" },
+          "color": { "field": "Temp", "type": "quantitative", "scale": { "scheme": "reds" } },
+          "tooltip": [
+            { "field": "lat", "type": "quantitative", "format": ".2f", "title": "Latitude:" },
+            { "field": "long", "type": "quantitative", "format": ".2f", "title": "Longitude:" },
+            { "field": "Temp", "type": "quantitative", "format": ".1f", "title": "Temperature (°C):" },
+            { "field": "name", "type": "nominal", "title": "Location:" },
+            { "field": "Year", "type": "quantitative", "title": "Year:" }
+          ]
+        }
+      }
+    ]
+  }
+  
