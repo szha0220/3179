@@ -3,18 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Australian Average Max Temperature Map</title>
+    <title>Temperature Visualisations: Map and Bar Chart</title>
     <!-- Include Vega, Vega-Lite, and Vega-Embed libraries -->
     <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
     <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
     <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+
+    <style>
+        /* Flex container for visualisations */
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between; /* Add space between the charts */
+            gap: 2%; /* Adds a gap between the visualisations */
+        }
+
+        .viz-container {
+            width: 47%;  /* Adjusted to fit both charts nicely */
+            margin-bottom: 40px;
+        }
+
+        h2 {
+            font-size: 1.5em;
+            text-align: center;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+        }
+    </style>
 </head>
 <body>
-    <h1>Australian Average Max Temperature Map</h1>
-    <!-- This div will hold the visualisation -->
-    <div id="map_chart"></div>
+    <h1>Temperature Visualisations: Map and Bar Chart</h1>
 
-    <!-- JavaScript to embed the Vega/Vega-Lite visualisation -->
-    <script src="vega_map_vis.js"></script>
+    <!-- Container for the visualisations -->
+    <div class="container">
+        <div class="viz-container">
+            <h2>Average Max Temperature Map</h2>
+            <!-- This div will hold the map visualisation -->
+            <div id="map_chart"></div>
+        </div>
+        
+        <div class="viz-container">
+            <h2>Bar Chart: Average Max Temperature by Location</h2>
+            <!-- This div will hold the bar chart visualisation -->
+            <div id="bar_chart"></div>
+        </div>
+    </div>
+
+    <!-- JavaScript to embed the Vega/Vega-Lite visualisations -->
+    <script>
+        // Load and render the map visualisation
+        vegaEmbed('#map_chart', 'AustralianAverageMaxTempSpec.json').catch(console.error);
+
+        // Load and render the bar chart visualisation
+        vegaEmbed('#bar_chart', 'bar_chart_vis.json').catch(console.error);
+    </script>
 </body>
 </html>
