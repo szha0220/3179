@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Temperature Visualisations: Map and Bar Chart</title>
+    <title>Temperature Visualisations: Map, Bar Chart, and Trend Line</title>
     <!-- Include Vega, Vega-Lite, and Vega-Embed libraries -->
     <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
     <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
@@ -23,6 +23,11 @@
             margin-bottom: 40px;
         }
 
+        .full-width-container {
+            width: 100%;
+            margin-bottom: 40px;
+        }
+
         h2 {
             font-size: 1.5em;
             text-align: center;
@@ -34,7 +39,7 @@
     </style>
 </head>
 <body>
-    <h1>Temperature Visualisations: Map and Bar Chart</h1>
+    <h1>Temperature Visualisations: Map, Bar Chart, and Trend Line</h1>
 
     <!-- Container for the visualisations -->
     <div class="container">
@@ -49,6 +54,12 @@
             <!-- This div will hold the bar chart visualisation -->
             <div id="bar_chart"></div>
         </div>
+        
+        <div class="full-width-container">
+            <h2>Trend Line: Average Max Temperature Over Time for Top 5 Locations</h2>
+            <!-- This div will hold the trend line visualisation -->
+            <div id="trend_line_chart"></div>
+        </div>
     </div>
 
     <!-- JavaScript to embed the Vega/Vega-Lite visualisations -->
@@ -58,6 +69,9 @@
 
         // Load and render the bar chart visualisation
         vegaEmbed('#bar_chart', 'bar_chart_vis.json').catch(console.error);
+
+        // Load and render the trend line visualisation
+        vegaEmbed('#trend_line_chart', 'trend_line_vis.json').catch(console.error);
     </script>
 </body>
 </html>

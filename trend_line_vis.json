@@ -1,0 +1,74 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "description": "Trend Line: Average Max Temperature Over Time for Top 5 Locations",
+    "width": 800,
+    "height": 400,
+    "data": {
+      "url": "./AustralianAverageMaxTemp.json",
+      "format": {"type": "json"}
+    },
+    "transform": [
+      {
+        "filter": "datum.name == 'KALUMBURU' || datum.name == 'BIRDSVILLE' || datum.name == 'DARWIN' || datum.name == 'MARBLE BAR' || datum.name == 'HALLS CREEK'"
+      }
+    ],
+    "layer": [
+      {
+        "mark": "line",
+        "encoding": {
+          "x": {
+            "field": "Year",
+            "type": "ordinal",
+            "title": "Year",
+            "axis": {
+              "labelAngle": -45,
+              "labelFontSize": 12,
+              "values": [1975, 1980, 1985, 1990, 1995, 2000, 2005, 2010, 2015, 2019]
+            }
+          },
+          "y": {
+            "field": "Temp",
+            "type": "quantitative",
+            "title": "Average Max Temperature (°C)"
+          },
+          "color": {
+            "field": "name",
+            "type": "nominal",
+            "title": "Location",
+            "legend": {"columns": 1}
+          }
+        }
+      },
+      {
+        "mark": {
+          "type": "point",
+          "filled": true,
+          "size": 50
+        },
+        "encoding": {
+          "x": {
+            "field": "Year",
+            "type": "ordinal",
+            "axis": {
+              "values": [1975, 1980, 1985, 1990, 1995, 2000, 2005, 2010, 2015, 2019]
+            }
+          },
+          "y": {
+            "field": "Temp",
+            "type": "quantitative"
+          },
+          "color": {
+            "field": "name",
+            "type": "nominal",
+            "legend": null
+          },
+          "tooltip": [
+            {"field": "name", "type": "nominal", "title": "Location"},
+            {"field": "Year", "type": "ordinal", "title": "Year"},
+            {"field": "Temp", "type": "quantitative", "title": "Average Max Temperature (°C)", "format": ".1f"}
+          ]
+        }
+      }
+    ]
+  }
+  
