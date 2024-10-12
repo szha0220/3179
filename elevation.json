@@ -1,0 +1,42 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Scatter plot showing temperature by elevation with annotation for airports.",
+  "width": 800,
+  "height": 600,
+  "data": {
+    "url": "./AustralianAverageMaxTemp.json",
+    "format": {"type": "json"}
+  },
+  "transform": [
+    {"sample": 20}
+  ],
+  "layer": [
+    {
+      "mark": {
+        "type": "circle",
+        "size": 200
+      },
+      "encoding": {
+        "x": {
+          "field": "elev",
+          "type": "quantitative",
+          "title": "Elevation (m)"
+        },
+        "y": {
+          "field": "Temp",
+          "type": "quantitative",
+          "title": "Average Max Temperature (°C)"
+        },
+        "color": {
+          "field": "name",
+          "type": "nominal",
+          "title": "Station Name"
+        },
+        "tooltip": [
+          {"field": "name", "type": "nominal", "title": "Station Name"},
+          {"field": "Temp", "type": "quantitative", "title": "Average Max Temperature (°C)", "format": ".1f"},
+          {"field": "elev", "type": "quantitative", "title": "Elevation (m)"}
+        ]
+      }
+    }]}
+ 

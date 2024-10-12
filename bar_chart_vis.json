@@ -1,61 +1,71 @@
 {
-    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-    "description": "A bar chart showing average max temperature by location with a slider for filtering top locations.",
-    "width": 600,
-    "height": 300,
-    "data": {
-      "url": "./AustralianAverageMaxTemp.json",
-      "format": {"type": "json"}
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "A bar chart showing average max temperature by location with a slider for filtering top locations.",
+  "width": 600,
+  "height": 300,
+  "data": {
+    "url": "./AustralianAverageMaxTemp.json",
+    "format": {"type": "json"}
+  },
+  "transform": [
+    {
+      "aggregate": [{"op": "mean", "field": "Temp", "as": "AvgTemp"}],
+      "groupby": ["name"]
     },
-    "transform": [
-      {
-        "aggregate": [{"op": "mean", "field": "Temp", "as": "AvgTemp"}],
-        "groupby": ["name"]
-      },
-      {
-        "window": [{"op": "rank", "as": "rank"}],
-        "sort": [{"field": "AvgTemp", "order": "descending"}]
-      },
-      {
-        "filter": "datum.rank <= sliderValue"
-      }
-    ],
-    "params": [
-      {
-        "name": "sliderValue",
-        "value": 10,
-        "bind": {
-          "input": "range",
-          "min": 5,
-          "max": 20,
-          "step": 1,
-          "name": "Top N Locations"
-        }
-      }
-    ],
-    "mark": "bar",
-    "encoding": {
-      "x": {
-        "field": "name",
-        "type": "nominal",
-        "title": "Location",
-        "axis": {"labelAngle": -45}
-      },
-      "y": {
-        "field": "AvgTemp",
-        "type": "quantitative",
-        "title": "Average Max Temperature (°C)"
-      },
-      "color": {
-        "field": "AvgTemp",
-        "type": "quantitative",
-        "title": "Temp (°C)",
-        "scale": {"scheme": "reds"}
-      },
-      "tooltip": [
-        {"field": "name", "type": "nominal", "title": "Location"},
-        {"field": "AvgTemp", "type": "quantitative", "title": "Average Max Temperature (°C)", "format": ".0f"}
-      ]
+    {
+      "window": [{"op": "rank", "as": "rank"}],
+      "sort": [{"field": "AvgTemp", "order": "descending"}]
+    },
+    {
+      "filter": "datum.rank <= sliderValue"
     }
+  ],
+  "params": [
+    {
+      "name": "sliderValue",
+      "value": 10,
+      "bind": {
+        "input": "range",
+        "min": 5,
+        "max": 20,
+        "step": 1,
+        "name": "Top N Locations"
+      }
+    }
+  ],
+  "mark": "bar",
+  "encoding": {
+    "x": {
+      "field": "name",
+      "type": "nominal",
+      "title": "Location",
+      "axis": {"labelAngle": -45}
+    },
+    "y": {
+      "field": "AvgTemp",
+      "type": "quantitative",
+      "title": "Average Max Temperature (°C)",
+      "scale": {
+        "zero": false
+      }
+    },
+    "color": {
+      "field": "AvgTemp",
+      "type": "quantitative",
+      "title": "Temp (°C)",
+      "scale": {
+        "scheme": "reds",
+        "type": "quantize",
+        "range": ["#fee5d9", "#fcbba1", "#fc9272", "#fb6a4a", "#de2d26", "#a50f15"]
+      },
+      "legend": {
+        "title": "Temperature (°C)",
+        "format": ".1f"
+      }
+    },
+    "tooltip": [
+      {"field": "name", "type": "nominal", "title": "Location"},
+      {"field": "AvgTemp", "type": "quantitative", "title": "Average Max Temperature (°C)", "format": ".1f"}
+    ]
   }
-  
+}

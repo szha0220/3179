@@ -2,30 +2,107 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Temperature Visualisations: Map, Bar Chart, and Trend Line</title>
-    <!-- Include Vega, Vega-Lite, and Vega-Embed libraries -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <title>Temperature Patterns and Visualisations Across Australia</title>
+    <!-- source all vegalite libs --> 
     <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
     <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
     <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
 
+    <!-- Flexbox layout using css-->
     <style>
-        /* Flex container for visualisations */
-        .container {
+        body {
             display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between; /* Add space between the charts */
-            gap: 2%; /* Adds a gap between the visualisations */
+            flex-direction: column;
+            align-items: center;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
         }
 
-        .viz-container {
-            width: 47%;  /* Adjusted to fit both charts nicely */
-            margin-bottom: 40px;
+        .grid-container {
+            display: grid;
+            grid-template-columns: 60% 35%;
+            grid-template-rows: auto auto;
+            row-gap: 50px;
+            column-gap: 20px;
+            max-width: 1200px;
+        }
+
+        .text-container {
+            grid-column: 1;
+            grid-row: 1 / span 1;
+            border: 2px solid #D9534F;
+            padding: 10px;
+            border-radius: 8px;
+            max-width: 400px;
+        }
+
+        .metadata-box {
+            background-color: #E1F5FE;
+            border: 2px solid #0288D1;
+            border-radius: 8px;
+            padding: 8px;
+            margin-top: 10px;
+            max-width: 380px;
+            font-size: 0.85em; 
+        }
+
+        .map-container {
+            grid-column: 2;
+            grid-row: 1;
+            margin-left: -250px;
+            height: 600px;
+        }
+
+        .bar-container {
+            grid-column: 1;
+            grid-row: 2;
+            margin-top: 50px;
+        }
+
+        .bar-text-container {
+            grid-column: 2;
+            grid-row: 2;
+            border: 2px solid #D9534F;
+            padding: 10px;
+            border-radius: 8px;
+            max-width: 300px;
+            margin-top: 50px;
+            margin-left: 100px;
+        }
+
+        .trend-text-container {
+            grid-column: 1;
+            grid-row: 3;
+            border: 2px solid #D9534F;
+            padding: 10px;
+            border-radius: 8px;
+            max-width: 300px;
+            margin-top: 50px;
+        }
+
+        .scatter-container {
+            grid-column: 1 / span 2; /* Needs to span both columns */
+            grid-row: 4;
+            margin-top: 50px;
+            width: 100%;
+        }
+
+        .scatter-text-container {
+            grid-column: 1 / span 2; 
+            grid-row: 5;
+            border: 2px solid #D9534F;
+            padding: 10px;
+            border-radius: 8px;
+            max-width: 1000px;
+            margin-top: 20px;
         }
 
         .full-width-container {
             width: 100%;
             margin-bottom: 40px;
+            margin-left: -400px; 
         }
 
         h2 {
@@ -33,45 +110,125 @@
             text-align: center;
         }
 
-        body {
-            font-family: Arial, sans-serif;
+        .description {
+            font-size: 1.1em;
+            line-height: 1.5em;
+        }
+
+        h1 {
+            font-size: 2em;
+            text-align: center;
+            margin: 20px 0;
         }
     </style>
 </head>
 <body>
-    <h1>Temperature Visualisations: Map, Bar Chart, and Trend Line</h1>
+    <h1>Temperature Patterns and Visualisations Across Australia</h1>
 
-    <!-- Container for the visualisations -->
-    <div class="container">
-        <div class="viz-container">
+    <div class="grid-container">
+        <div class="text-container description">
+            <p>
+                The data for these visualisations comes from 112 weather stations across Australia, with decades of average maximum temperature records. This data, provided by the Bureau of Meteorology (BoM), offers valuable insights into temperature patterns across various regions.
+
+
+            </p>
+            <p>
+                These visualisations aim to provide an accessible understanding of how average maximum temperatures vary both geographically and temporally across Australia. By leveraging multiple visualisation types—maps, bar charts, trend lines, and scatter plots—users can explore regional differences in temperature, identify the hottest locations, and observe long-term trends in temperature changes. Together, the visualisations help in interpreting Australia's climate patterns, offering valuable insights into how temperatures evolve across the country and over time.
+            </p>
+            <div class="metadata-box">
+                <p><strong>Data Sources:</strong></p>
+                <p>1. <a href="https://www.climatechangeinaustralia.gov.au/en/obtain-data/download-datasets/#Clim" target="_blank">Climate Change in Australia</a></p>
+                <p>2. <a href="https://www.kaggle.com/datasets/joshmills/australian-average-daily-maximum-tempreature" target="_blank">Kaggle Dataset: Australian Average Max Temperature</a></p>
+                <p><strong>Author:</strong> Shu Zhan Zhang</p>
+                <p><strong>Date:</strong> 11/10/2024</p>
+            </div>
+        </div>
+
+        <div class="map-container">
             <h2>Average Max Temperature Map</h2>
-            <!-- This div will hold the map visualisation -->
             <div id="map_chart"></div>
         </div>
-        
-        <div class="viz-container">
+
+        <div class="bar-container">
             <h2>Bar Chart: Average Max Temperature by Location</h2>
-            <!-- This div will hold the bar chart visualisation -->
             <div id="bar_chart"></div>
         </div>
-        
+
+        <div class="bar-text-container description">
+            <p>
+                This bar chart visualises the top N locations with the highest average maximum temperatures. The colour gradient indicates the intensity of the temperature, with darker shades representing hotter locations. The interactive slider below the chart allows users to explore the data for different numbers of top locations. The chart provides an easy-to-read comparison of how temperatures vary among Australia’s hottest regions.
+            </p>
+        </div>
+
         <div class="full-width-container">
-            <h2>Trend Line: Average Max Temperature Over Time for Top 5 Locations</h2>
-            <!-- This div will hold the trend line visualisation -->
+            <h2>Trend Line: Average Max Temperature Over Time for Top Locations</h2>
             <div id="trend_line_chart"></div>
+        </div>
+
+        <!-- Scatter plot for Temperature by Elevation -->
+        <div class="scatter-container">
+            <h2>Scatter Plot: Temperature by Elevation</h2>
+            <div id="scatter_plot"></div>
+        </div>
+
+        <!-- Explanation for scatter plot -->
+        <div class="scatter-text-container description">
+            <p>
+                The scatter plot shows the relationship between temperature and elevation for different weather stations. Most stations are located within a certain range of elevations, which correlates with population distribution and access. Higher elevations generally show lower temperatures, while lower elevations are associated with higher maximum temperatures. Additionally, it is common for more weather stations to be situated at particular elevations, which makes sense due to the location of population centres and transportation networks that allow for the construction and maintenance of these stations.
+            </p>
+        </div>
+
+        <!-- Explanation for trend line -->
+        <div class="trend-text-container description">
+            <p>
+                Over the years, the average maximum temperature has shown a slight upward trend. This increase in temperature could be attributed to climate change and rising global temperatures. A noticeable dip in 2010, however, might be explained by regional climate anomalies or specific meteorological events that year, such as La Niña, which is known to cause cooler conditions in parts of Australia.
+            </p>
         </div>
     </div>
 
-    <!-- JavaScript to embed the Vega/Vega-Lite visualisations -->
     <script>
-        // Load and render the map visualisation
-        vegaEmbed('#map_chart', 'AustralianAverageMaxTempSpec.json').catch(console.error);
-
-        // Load and render the bar chart visualisation
-        vegaEmbed('#bar_chart', 'bar_chart_vis.json').catch(console.error);
-
-        // Load and render the trend line visualisation
-        vegaEmbed('#trend_line_chart', 'trend_line_vis.json').catch(console.error);
+       /*Embed visualisations according to ids defined earlier--> */
+        vegaEmbed('#map_chart', 'AustralianAverageMaxTempSpec.json');
+        vegaEmbed('#bar_chart', 'bar_chart_vis.json');
+        vegaEmbed('#trend_line_chart', 'trend_line_vis.json');
+        vegaEmbed('#scatter_plot', {
+            "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+            "description": "Scatter plot showing temperature by elevation.",
+            "width": 800, 
+            "height": 500, 
+            "data": {
+                "url": "./AustralianAverageMaxTemp.json",
+                "format": {"type": "json"}
+            },
+            "mark": {"type": "circle", "size": 200},  /* Increased dot size */
+            "transform": [
+                {"filter": "datum.elev >= 0 && datum.Temp >= 15"},  /* Filter out invalid values */
+                {"sample": 30}  /* Random sample of 30 data points */
+            ],
+            "encoding": {
+                "x": {
+                    "field": "elev",
+                    "type": "quantitative",
+                    "title": "Elevation (m)"
+                },
+                "y": {
+                    "field": "Temp",
+                    "type": "quantitative",
+                    "title": "Average Max Temperature (°C)",
+                    "scale": {"domain": [15, 40]}  /* Adjusted domain */
+                },
+                "color": {
+                    "field": "name",
+                    "type": "nominal",
+                    "title": "Station Name"
+                },
+                "tooltip": [
+                    {"field": "name", "type": "nominal", "title": "Station Name"},
+                    {"field": "Temp", "type": "quantitative", "title": "Average Max Temperature (°C)", "format": ".1f"},
+                    {"field": "elev", "type": "quantitative", "title": "Elevation (m)"}
+                ]
+            }
+        });
     </script>
 </body>
 </html>
